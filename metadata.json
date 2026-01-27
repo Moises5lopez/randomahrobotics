@@ -1,0 +1,9 @@
+{
+  "name": "Echoes of the Past - Fair Planner",
+  "description": "A comprehensive online database and management platform for organizing archaeology awareness fairs, featuring activity tracking, cost analysis, participant management, and marketing strategies.",
+  "requestFramePermissions": [
+    "camera",
+    "microphone",
+    "geolocation"
+  ]
+}
