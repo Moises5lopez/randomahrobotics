@@ -8,6 +8,19 @@ export enum ActivityType {
   CUSTOM = 'Custom / Town Specific'
 }
 
+export type ContactCategory = 'Vendor' | 'Staff' | 'Authority' | 'Logistics' | 'Sponsor';
+
+export interface Contact {
+  id: string;
+  name: string;
+  role: string;
+  category: ContactCategory;
+  phone: string;
+  email: string;
+  notes?: string;
+  whatsappLink?: string;
+}
+
 export interface Material {
   id: string;
   name: string;
@@ -15,7 +28,10 @@ export interface Material {
   isReusable: boolean;
   type: 'Purchase' | 'Rent';
   estimatedCost: number;
+  actualCost: number;
   notes: string;
+  contactId?: string;
+  staffRequired: number;
 }
 
 export interface Activity {
@@ -23,91 +39,54 @@ export interface Activity {
   name: string;
   category: ActivityType;
   description: string;
-  requiredMaterialsIds: string[];
+  materialIds: string[];
   notes: string;
-  // Specific to Food & Drink
-  vendorName?: string;
-  foodType?: string;
-  vendorContact?: string;
-}
-
-export interface MarketStudyCompany {
-  id: string;
-  name: string;
-  specialty: string;
-  services: string;
-  costRange: string;
-  contact: string;
-}
-
-export interface MarketingCompany extends MarketStudyCompany {}
-
-export interface EntertainmentProvider {
-  id: string;
-  name: string;
-  serviceType: string;
   cost: number;
-  duration: string;
-  contact: string;
-  notes: string;
+  contactId?: string;
+  staffRequired: number;
 }
 
-export interface BudgetEntry {
+export interface GovernmentRequirement {
   id: string;
-  category: 'Activities' | 'Marketing' | 'Materials' | 'Vendors' | 'Services';
+  title: string;
   description: string;
-  estimatedCost: number;
-  actualCost: number;
-  status: 'Pending' | 'Paid';
-  notes: string;
+  status: 'Pending' | 'In Progress' | 'Completed';
+  sourceUrl?: string;
 }
 
-export interface MarketingMaterial {
+export interface SocialPost {
   id: string;
-  name: string;
-  type: 'Poster' | 'Flyer' | 'Social Media' | 'Other';
-  url: string;
-}
-
-export interface MarketingStrategyExecution {
-  id: string;
-  strategy: string; // e.g., "Social Media", "Radio"
-  implemented: boolean;
-  evidenceLink: string;
-}
-
-export interface MarketStudyReport {
-  attendancePotential: string;
-  localCulture: string;
-  infrastructure: string;
-  economicContext: string;
-  heritageAccess: string;
-  seasonality: string;
-  promotionalEnv: string;
-  risks: string;
-  impactIndicators: string;
-  feasibility: string;
-}
-
-export interface FeasibilityStep {
-  id: string;
-  description: string;
-  completed: boolean;
+  platform: 'Instagram' | 'Facebook' | 'Twitter/X' | 'TikTok';
+  content: string;
+  suggestedHashtags: string[];
+  status: 'Draft' | 'Published';
 }
 
 export interface Fair {
   id: string;
   title: string;
   town: string;
+  country: string;
+  population?: string; 
+  populationSourceUrl?: string; 
   date: string;
-  feasibilitySteps: FeasibilityStep[];
-  selectedMarketStudyCompanyId?: string;
-  marketStudyReport: MarketStudyReport;
-  linkedActivityIds: string[];
-  customActivities: Activity[];
-  linkedEntertainmentIds: string[];
-  selectedMarketingCompanyId?: string;
-  marketingExecution: MarketingStrategyExecution[];
-  marketingMaterials: MarketingMaterial[];
-  budget: BudgetEntry[];
+  whatsappGroupLink?: string;
+  feasibilitySteps: { id: string; description: string; completed: boolean }[];
+  marketStudyStats?: {
+    potentialVisitors: number;
+    economicImpact: number;
+    communityInterest: number; 
+    infrastructureScore: number;
+  };
+  marketAnalysisSummary?: string;
+  marketRisks?: string;
+  activities: Activity[];
+  materials: Material[];
+  contacts: Contact[];
+  govRequirements: GovernmentRequirement[];
+  socialPosts: SocialPost[];
+  budget: {
+    totalEstimated: number;
+    totalActual: number;
+  };
 }
